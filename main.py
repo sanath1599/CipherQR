@@ -84,12 +84,12 @@ def add_border_to_image():
         for j in range(columns):
             piece = Image.open(f"piece_{i}_{j}.jpg")
             border_images.append(piece)
-    print(len(border_images))
+    # print(len(border_images))
     #2 * int((30/25) *
     # Calculate the dimensions of the final image
     width = central_image.width + 2 * max(image.width for image in border_images)
     height = central_image.height + int(2 * 35/25 *  max(image.height for image in border_images))
-    print(height)
+    # print(height)
     qr_height = int(height - central_image.height) 
     # Create a new image with the calculated dimensions
     final_image = Image.new("RGB", (width, height))
@@ -108,19 +108,19 @@ def add_border_to_image():
                     y_border+= border_image.height
                     x_border = 0
                 k+=1
-    print("AFTER PASTING QR")
+    # print("AFTER PASTING QR")
     
     # Paste the central image in the center
     x_central = (width - central_image.width) // 2
     y_central = y_border + border_image.height
     final_image.paste(central_image, (x_central, y_central))
-    print("AFTER PUTTING IMAGE")
+    # print("AFTER PUTTING IMAGE")
     Counter = 100
     bkp_y_border = y_border
     while(x_border<final_image.width and y_border<final_image.height):
         if(x_border < x_central):
             final_image.paste(border_images[Counter], (x_border,y_border))
-            print(x_border,y_border)
+            # print(x_border,y_border)
             x_border+= border_images[Counter].width
             if(Counter>200):
                 Counter = 0
@@ -129,14 +129,14 @@ def add_border_to_image():
         else:
             x_border = 0
             y_border += border_image.height
-            print("Increase increase")
+            # print("Increase increase")
     x_border = int(central_image.width + (final_image.width - central_image.width)/2)
     y_border = 0
     Counter = 100
     while(y_border<final_image.height):
         if(x_border < final_image.width):
             final_image.paste(border_images[Counter], (x_border,y_border))
-            print(x_border,y_border)
+            # print(x_border,y_border)
             x_border+= border_images[Counter].width
             if(Counter>200):
                 Counter = 0
@@ -145,7 +145,7 @@ def add_border_to_image():
         else:
             x_border = int(central_image.width + (final_image.width - central_image.width)/2)
             y_border += border_image.height
-            print("Increase increase")
+            # print("Increase increase")
     final_image.save("final_image_before_border.jpg")
     # for border_image in border_images:
     #     final_image.paste(border_image, (x_border, y_border))
@@ -204,7 +204,7 @@ def cut_border_from_image():
     d = json.loads(user_comment)
     # print("Read in exif data: %s" % d)
     # Define the size of each piece
-    print(d)
+    # print(d)
     piece_size = d['dim']
 
     # Create a new final image with the target size (290x290)
