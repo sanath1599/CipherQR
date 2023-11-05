@@ -75,7 +75,7 @@ def breakdown_qr():
 
 def add_border_to_image():
     # Open the central image
-    central_image = Image.open("source.jpg")
+    central_image = Image.open("source.jpeg")
     rows = 25
     columns = 25
     # Define a list of border images
@@ -85,28 +85,19 @@ def add_border_to_image():
             piece = Image.open(f"piece_{i}_{j}.jpg")
             border_images.append(piece)
     print(len(border_images))
+    #2 * int((30/25) *
     # Calculate the dimensions of the final image
     width = central_image.width + 2 * max(image.width for image in border_images)
-    height = central_image.height + 2 * max(image.height for image in border_images)
-
+    height = central_image.height + int(2 * 35/25 *  max(image.height for image in border_images))
+    print(height)
+    qr_height = int(height - central_image.height) 
     # Create a new image with the calculated dimensions
     final_image = Image.new("RGB", (width, height))
-
-    # Paste the central image in the center
-    x_central = (width - central_image.width) // 2
-    y_central = (height - central_image.height) // 2
-    final_image.paste(central_image, (x_central, y_central))
-    final_image.save("final_image_before_border.jpg")
-    # Paste the border images around the central image
     x_border = 0
     y_border = 0
-    # for border_image in border_images:
-    #     final_image.paste(border_image, (x_border, y_border))
-    #     x_border += border_image.width
-    #     y_border += border_image.height
-
+    border_image = Image.open(f"piece_0_0.jpg")
+    # Paste the border images around the central image
     
-
     for k in range(1):
         for i in range(25):
             for j in range(25):
@@ -117,9 +108,58 @@ def add_border_to_image():
                     y_border+= border_image.height
                     x_border = 0
                 k+=1
+    print("AFTER PASTING QR")
+    
+    # Paste the central image in the center
+    x_central = (width - central_image.width) // 2
+    y_central = y_border + border_image.height
+    final_image.paste(central_image, (x_central, y_central))
+    print("AFTER PUTTING IMAGE")
+    Counter = 100
+    bkp_y_border = y_border
+    while(x_border<final_image.width and y_border<final_image.height):
+        if(x_border < x_central):
+            final_image.paste(border_images[Counter], (x_border,y_border))
+            print(x_border,y_border)
+            x_border+= border_images[Counter].width
+            if(Counter>200):
+                Counter = 0
+            Counter+=1
+
+        else:
+            x_border = 0
+            y_border += border_image.height
+            print("Increase increase")
+    x_border = int(central_image.width + (final_image.width - central_image.width)/2)
+    y_border = 0
+    Counter = 100
+    while(y_border<final_image.height):
+        if(x_border < final_image.width):
+            final_image.paste(border_images[Counter], (x_border,y_border))
+            print(x_border,y_border)
+            x_border+= border_images[Counter].width
+            if(Counter>200):
+                Counter = 0
+            Counter+=1
+
+        else:
+            x_border = int(central_image.width + (final_image.width - central_image.width)/2)
+            y_border += border_image.height
+            print("Increase increase")
+    final_image.save("final_image_before_border.jpg")
+    # for border_image in border_images:
+    #     final_image.paste(border_image, (x_border, y_border))
+    #     x_border += border_image.width
+    #     y_border += border_image.height
+
+    
+
+    
                 # print(x_border,y_border)
+    qr_distorted_image = final_image.crop((0, 0, final_image.width, qr_height*1.5))
 
-
+    qr_distorted_image.save("distorted_qr.jpg")
+    final_image.paste(qr_distorted_image, (0, final_image.height-int(qr_height*1.5)))
     # print(y_border)
     # for k in range(313):
     #     y_border = central_image.height + border_images[0].height
@@ -203,7 +243,9 @@ def cut_border_from_image():
     final_image.save("reconstructed_qr.jpg")
     # final_image.show()
 
-generate_qr("THIS IS TH#$&^*&#^$#@&* DATC\n suck my dick\njgfhfsdlkjghldsjkghdlskjghjdsakfhljkdshfadshads\nfjdshfkjdshgfldskjfgdlshkjgfdlskhgfldhksfglhdkasg")
+# generate_qr("THIS\n\n\n\n\gnjdsfngjlkdsnfgm.,xcnzv,mcnxfjn;rawefjhljkdn,czmxnkgfjdskrjg'pjra'gijf;lkdgjfkl;djgk;fldjg;fkldsjgfkldjgfkldsjgkfl;sdgjfkl;dsjgfk;ldjgfkldjgfk;ldjgkfldjgfkdljgflkjhfkhjg[iowaj0iepjsdf,mnvxj!@#$%^&*())(*&^%$#@!@#$%^&*()(*&^%$#@!@#$%^&*()(*&^%$#@!@#$%^&*()*&^%$#)))] IS THE DATEjrghusdhvjksdhfbuachfausdhfuihfguirhfgurhfljdshfjxcnzv,jxcn")
+# generate_qr("THIS IS THE DATATHIS IS THE DATATHIS IS THE DATATHE DATATHIS IS THE DATATHE DATATHIS IS THE DATATHE DATATHIS IS THE DATATHE DATATHIS IS THE DATATHE DATATHIS IS THE DATATHIS IS THE DATATHIS IS THE DATATHIS IS THE DATATHIS IS THE DATATHIS IS THE DATA")
+generate_qr("THIS IS THE DATA")
 breakdown_qr()
 add_border_to_image()
 cut_border_from_image()
