@@ -158,7 +158,7 @@ def add_border_to_image():
                 # print(x_border,y_border)
     qr_distorted_image = final_image.crop((0, 0, final_image.width, qr_height*1.5))
 
-    qr_distorted_image.save("distorted_qr.jpg")
+    # qr_distorted_image.save("distorted_qr.jpg")
     final_image.paste(qr_distorted_image, (0, final_image.height-int(qr_height*1.5)))
     # print(y_border)
     # for k in range(313):
