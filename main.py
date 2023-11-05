@@ -238,6 +238,26 @@ def cut_border_from_image():
             x = 0
             y += piece_size
         Counter+=1
+    final_image = final_image.convert('L')
+    width, height = final_image.size
+
+    # Initialize variables to store the cropping coordinates
+    left, right, top, bottom = width, 0, height, 0
+
+    # Iterate over each pixel to find the cropping coordinates
+    for x in range(width):
+        for y in range(height):
+            pixel = final_image.getpixel((x, y))
+            if pixel == 1:  # Black pixel
+                left = min(left, x)
+                right = max(right, x) 
+                top = min(top, y)
+                bottom = max(bottom, y) 
+
+    # Crop the image based on the calculated coordinates
+    final_image = final_image.crop((left - 15, top - 15, right + 15, bottom + 15))
+
+    # Save the cropped image
 
     # Save or display the final image
     final_image.save("reconstructed_qr.jpg")
@@ -245,7 +265,7 @@ def cut_border_from_image():
 
 # generate_qr("THIS\n\n\n\n\gnjdsfngjlkdsnfgm.,xcnzv,mcnxfjn;rawefjhljkdn,czmxnkgfjdskrjg'pjra'gijf;lkdgjfkl;djgk;fldjg;fkldsjgfkldjgfkldsjgkfl;sdgjfkl;dsjgfk;ldjgfkldjgfk;ldjgkfldjgfkdljgflkjhfkhjg[iowaj0iepjsdf,mnvxj!@#$%^&*())(*&^%$#@!@#$%^&*()(*&^%$#@!@#$%^&*()(*&^%$#@!@#$%^&*()*&^%$#)))] IS THE DATEjrghusdhvjksdhfbuachfausdhfuihfguirhfgurhfljdshfjxcnzv,jxcn")
 # generate_qr("THIS IS THE DATATHIS IS THE DATATHIS IS THE DATATHE DATATHIS IS THE DATATHE DATATHIS IS THE DATATHE DATATHIS IS THE DATATHE DATATHIS IS THE DATATHE DATATHIS IS THE DATATHIS IS THE DATATHIS IS THE DATATHIS IS THE DATATHIS IS THE DATATHIS IS THE DATA")
-generate_qr("THIS IS THE DATA")
+generate_qr("https://sanathswaroop.com")
 breakdown_qr()
 add_border_to_image()
 cut_border_from_image()
