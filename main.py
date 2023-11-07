@@ -1,10 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
-import tkinter
 from tkinter.tix import IMAGETEXT
-from PIL import Image,ImageTk
-import qrcode
-import os
+from PIL import Image
 from package import generate_qr, breakdown_qr,add_border_to_image, cut_border_from_image
 
 def generate_qr_button():
@@ -18,16 +15,12 @@ def generate_qr_button():
 def select_image_button():
     file_path = filedialog.askopenfilename()
     cut_border_from_image(file_path)
-    display_reconstructed_image(file_path)
+    display_reconstructed_image()
+    result_label.config(text="QR code Deciphered from the final image.")
 
 def display_reconstructed_image():
-    img = Image.open("reconstructed_qr.jpg")
-    img = img.resize((300, 300))
-    # img.show()
-    test = ImageTk.PhotoImage(img)
-    label1 = tkinter.Label(image=test)
-    label1.image = test
-    label1.place(x=0, y=0)
+    img = Image.open("./reconstructed_qr.jpg")
+    img.show()
 
 # Create the main window
 window = tk.Tk()
