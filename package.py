@@ -14,13 +14,24 @@ def generate_qr(data):
     img = qrcode.make(data)
     img.save("qr.jpg")
 
+    
 def breakdown_qr():
     """
     Breaks down the QR code image into smaller pieces and saves each piece as separate image files.
     """
-    original_image = Image.open("qr.jpg")
-    # Get the width and height of the image from the size method
-    width, height = original_image.size
+    bw_image = Image.open("qr.jpg")# Get the width and height of the image from the size method
+    width, height = bw_image.size
+    original_image = Image.new("RGB", (width, height))
+    original_image.paste(bw_image)
+    for x in range(width):
+        for y in range(height):
+            pixel = original_image.getpixel((x, y))
+            print(pixel)
+            if pixel == (255,255,255):  # white pixel
+                original_image.putpixel( (x, y), (102, 51, 0, 255) ) 
+            # if pixel == (0,0,0):
+            #     original_image.putpixel( (x, y), (102, 51, 1, 255) ) 
+    original_image.show()
     # Define the number of rows and coloumns the qr needs to be split into
     rows = 25
     columns = 25
@@ -167,14 +178,24 @@ def cut_border_from_image(path):
     width, height = final_image.size
     left, right, top, bottom = width, 0, height, 0
     # check for the last black pixel and add 15 inches to it and crop it
-    for x in range(width):
-        for y in range(height):
-            pixel = final_image.getpixel((x, y))
-            if pixel == 1:  # Black pixel
-                left = min(left, x)
-                right = max(right, x) 
-                top = min(top, y)
-                bottom = max(bottom, y) 
-    final_image = final_image.crop((left - 15, top - 15, right + 15, bottom + 15))
+    # for x in range(width):
+    #     for y in range(height):
+    #         pixel = final_image.getpixel((x, y))
+    #         if pixel == (102, 51, 0, 255):  # Black pixel
+    #             left = min(left, x)
+    #             right = max(right, x) 
+    #             top = min(top, y)
+    #             bottom = max(bottom, y) 
 
+    # final_image = final_image.crop((left - 15, top - 15, right + 15, bottom + 15))
+    # for x in range(width):
+    #     for y in range(height):
+    #         pixel = final_image.getpixel((x, y))
+    #         print(pixel)
+    #         if pixel == (102, 51, 0, 255):  # white pixel
+    #             final_image.putpixel( (x, y), (255, 255, 255, 255) ) 
+    #         # elif pixel == (102, 51, 1, 255):
+    #         #     final_image.putpixel( (x, y), (0, 0, 0, 255) ) 
     final_image.save("reconstructed_qr.jpg")
+
+# picture.putpixel( (x,y), new_color)

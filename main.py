@@ -43,7 +43,7 @@ generate_button.pack()
 right_frame = tk.Frame(window)
 right_frame.pack(side="left", padx=10)
 
-select_image_button = tk.Button(right_frame, text="Select Image", command=select_image_button)
+select_image_button = tk.Button(right_frame, text="Select Image to Decipher", command=select_image_button)
 select_image_button.pack()
 
 result_label = tk.Label(right_frame)
